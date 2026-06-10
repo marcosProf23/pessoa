@@ -25,7 +25,7 @@ function App(){
       console.log("Dados a serem enviados", formValores);
 
       //Enviando dados via Api
-      const response = await fetch('http://localhost:3000/cadastrarPessoa',{
+      const response = await fetch('https://pessoa-liard.vercel.app/api/cadastrarPessoa',{
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
