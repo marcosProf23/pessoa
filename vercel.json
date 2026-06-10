@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "backend/controllers/cadastrarPessoa.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/cadastrarPessoa",
+      "dest": "backend/controllers/cadastrarPessoa.js"
+    }
+  ]
+}
