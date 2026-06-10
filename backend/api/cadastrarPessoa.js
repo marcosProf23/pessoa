@@ -41,10 +41,5 @@ app.post("/cadastrarPessoa", (req, res) => {
         }
     );
 });
-/*
-app.listen(3000, () => {
-    console.log("Servidor rodando com sucesso na porta 3000");
-});
 
-*/
 export default app;

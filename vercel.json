@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "backend/controllers/cadastrarPessoa.js",
+      "src": "backend/api/cadastrarPessoa.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "backend/controllers/cadastrarPessoa.js"
+      "dest": "backend/api/cadastrarPessoa.js"
     }
   ]
 }
