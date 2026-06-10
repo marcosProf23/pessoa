@@ -1,45 +1,46 @@
-// srv -> cadastrarPessoa.js
+// /api/cadastrarPessoa.js
 
-import express from "express";
-import cors from "cors";
-//import CadastrarPessoa from "./model/Pessoa.js";
 import connection from "../model/db copy.js";
 
-const app = express();
+export default async function handler(req, res) {
+  // ?? CORS manual
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-app.use(express.json());
-app.use(cors());
+  // ?? Preflight request (browser manda antes do POST)
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
 
-app.post("/cadastrarPessoa", (req, res) => {
+  // ?? bloqueia métodos não permitidos
+  if (req.method !== "POST") {
+    return res.status(405).json({ erro: "Método não permitido" });
+  }
 
-    const { nome, cpf,idade } = req.body;
+  try {
+    const { nome, cpf, idade } = req.body;
 
-    console.log("Dados recebidos", { nome, cpf, idade });
+    console.log("Dados recebidos:", { nome, cpf, idade });
 
     const sql = `
-        INSERT INTO pessoas (nome,  cpf, idade)
-        VALUES (?, ?, ?)
+      INSERT INTO pessoas (nome, cpf, idade)
+      VALUES (?, ?, ?)
     `;
 
-    connection.query(
-        sql,
-        [nome, cpf, idade],
-        (error, results, fields) => {
+    connection.query(sql, [nome, cpf, idade], (error) => {
+      if (error) {
+        console.error(error);
+        return res.status(500).json({ erro: "Erro ao inserir dados" });
+      }
 
-            if (error) {
-                console.error(error);
-                return res.status(500).json({
-                    erro: "Erro ao inserir dados"
-                });
-            }
+      return res.status(201).json({
+        mensagem: "Pessoa cadastrada com sucesso"
+      });
+    });
 
-            console.log("Dados inseridos com sucesso!");
-
-            res.status(201).json({
-                mensagem: "Pessoa cadastrada com sucesso"
-            });
-        }
-    );
-});
-
-export default app;
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ erro: "Erro interno no servidor" });
+  }
+}
